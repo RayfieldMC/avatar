@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LittleAvatar</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f3f3f3;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1000px;
+      gap: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #333;
+      text-align: center;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border-radius: 2px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    input:focus {
+      border-color: #0078d4;
+      outline: none;
+      box-shadow: 0 0 0 2px #0078d433;
+    }
+    button {
+      padding: 0.7rem 1.2rem;
+      background: #0078d4;
+      color: white;
+      font-weight: 500;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #005a9e;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+    }
+
+    .avatar-box img {
+      width: 150px;
+      height: 150px;
+      border: 1px solid #ccc;
+      image-rendering: pixelated;
+    }
+
+    .info-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 250px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+      word-break: break-all;
+    }
+    .info-row span:first-child {
+      font-weight: 500;
+      color: #333;
+    }
+    .info-row span:last-child {
+      color: #555;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .copy-btn {
+      background: #e1e1e1;
+      color: #111;
+    }
+    .copy-btn:hover {
+      background: #ccc;
+    }
+
+    .error {
+      color: #c00;
+      font-weight: bold;
+    }
+
+    a.api-link {
+      color: #0078d4;
+      text-decoration: none;
+    }
+    a.api-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-card {
+      justify-content: center;
+      text-align: center;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>LittleAvatar Lookup</h1>
+  <div class="container">
+    <!-- Player Lookup Card -->
+    <div class="search-box">
+      <input type="text" id="playerInput" placeholder="Enter playername..." />
+      <button onclick="lookupPlayer()">Search</button>
+    </div>
+
+    <div id="card" class="card" style="display:none;">
+      <div class="avatar-box">
+        <img id="avatarImg" src="" alt="avatar" />
+      </div>
+      <div class="info-box">
+        <div class="info-row">
+          <span>Player</span>
+          <span id="playerName">-</span>
+        </div>
+        <div class="info-row">
+          <span>Avatar URL</span>
+          <span id="avatarUrl">-</span>
+        </div>
+        <div class="actions">
+          <button class="copy-btn" onclick="copyUrl()">Copy URL</button>
+          <a id="downloadLink" download="avatar.png"><button>Download Avatar</button></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Info Card -->
+    <div class="card">
+      <div class="info-box">
+        <div class="info-row">
+          <span>API for LittleSkin Avatars</span>
+          <span>-</span>
+        </div>
+        <div class="info-row">
+          <span>Avatar URL by Playername</span>
+          <span><a class="api-link" href="https://littleavatar.onrender.com/avatar/playername/(playername).png" target="_blank">littleavatar.onrender.com/avatar/playername/(playername).png</a></span>
+        </div>
+        <div class="info-row">
+          <span>Avatar URL by Player UUID</span>
+          <span><a class="api-link" href="https://littleavatar.onrender.com/avatar/(playeruuid).png" target="_blank">littleavatar.onrender.com/avatar/(playeruuid).png</a></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Card -->
+    <div class="card footer-card">
+      <div class="info-box">
+        <span style="font-weight:500; font-size:1.1rem;">Made with 💖 for LittleSkin Users</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById("playerInput");
+    const card = document.getElementById("card");
+    const avatarImg = document.getElementById("avatarImg");
+    const avatarUrlSpan = document.getElementById("avatarUrl");
+    const playerNameSpan = document.getElementById("playerName");
+    const downloadLink = document.getElementById("downloadLink");
+    let avatarUrl = "";
+
+    function lookupPlayer() {
+      const name = input.value.trim();
+      if (!name) {
+        card.style.display = "none";
+        return;
+      }
+      avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`;
+      avatarImg.src = avatarUrl;
+      avatarImg.alt = `Avatar of ${name}`;
+      playerNameSpan.textContent = name;
+      avatarUrlSpan.textContent = avatarUrl;
+      avatarUrlSpan.classList.remove("error");
+      downloadLink.href = avatarUrl; // direct download link
+      card.style.display = "flex";
+    }
+
+    avatarImg.addEventListener("error", () => {
+      avatarImg.src = "";
+      avatarUrlSpan.textContent = "❌ No Player Found";
+      avatarUrlSpan.classList.add("error");
+      downloadLink.href = "#";
+    });
+
+    function copyUrl() {
+      if (!avatarUrl || avatarUrlSpan.classList.contains("error")) {
+        alert("No valid player to copy!");
+        return;
+      }
+      navigator.clipboard.writeText(avatarUrl);
+      alert("Copied: " + avatarUrl);
+    }
+  </script>
+</body>
+</html>
