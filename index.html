@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>LittleAvatar</title>
+  <title>LittleSkin Avatar Grabber</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -212,12 +212,12 @@
       playerNameSpan.textContent = name;
       avatarUrlSpan.textContent = avatarUrl;
       avatarUrlSpan.classList.remove("error");
-      downloadLink.href = avatarUrl; // direct download link
+      downloadLink.href = avatarUrl+"?download"; // direct download link
       card.style.display = "flex";
     }
 
     avatarImg.addEventListener("error", () => {
-      avatarImg.src = "";
+      avatarImg.src = "fallback.png";
       avatarUrlSpan.textContent = "❌ No Player Found";
       avatarUrlSpan.classList.add("error");
       downloadLink.href = "#";
