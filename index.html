@@ -217,7 +217,7 @@
     }
 
     avatarImg.addEventListener("error", () => {
-      avatarImg.src = "fallback.png";
+      avatarImg.src = "./fallback.png";
       avatarUrlSpan.textContent = "❌ No Player Found";
       avatarUrlSpan.classList.add("error");
       downloadLink.href = "#";
@@ -234,4 +234,5 @@
   </script>
 </body>
 </html>
+
 
