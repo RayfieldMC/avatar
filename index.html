@@ -208,11 +208,11 @@
         </div>
         <div class="info-row">
           <span>Avatar URL by Playername</span>
-          <span>littleavatar.onrender.com/avatar/playername/&lt;PLAYER_NAME&gt;.png</span>
+          <span>littleavatar.onrender.com/avatar/playername/{PLAYER_NAME}.png</span>
         </div>
         <div class="info-row">
           <span>Avatar URL by Player UUID</span>
-          <span>littleavatar.onrender.com/avatar/&lt;PLAYER UUID&gt;.png</span>
+          <span>littleavatar.onrender.com/avatar/{PLAYER_UUID}.png</span>
         </div>
       </div>
     </div>
@@ -257,7 +257,7 @@
         card.style.display = "none";
         return;
       }
-      avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`+'?res=1024';
+      avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`;
       avatarImg.style.display = "none"; // hide image until loaded
       spinner.style.display = "block";  // show spinner
       avatarImg.src = avatarUrl;
@@ -265,7 +265,7 @@
       playerNameSpan.textContent = name;
       avatarUrlSpan.textContent = avatarUrl;
       avatarUrlSpan.classList.remove("error");
-      downloadLink.href = avatarUrl+"&download"; 
+      downloadLink.href = avatarUrl+"?res=1024&download"; 
       card.style.display = "flex";
     }
 
@@ -294,4 +294,5 @@
   </script>
 </body>
 </html>
+
 
