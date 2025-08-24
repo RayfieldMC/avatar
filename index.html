@@ -74,11 +74,44 @@
       flex-wrap: wrap;
     }
 
-    .avatar-box img {
+    /* Avatar box & spinner fix */
+    .avatar-box {
       width: 150px;
       height: 150px;
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
       border: 1px solid #ccc;
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
       image-rendering: pixelated;
+      display: none; /* hidden until loaded */
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0078d4;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
     .info-box {
@@ -147,6 +180,7 @@
 
     <div id="card" class="card" style="display:none;">
       <div class="avatar-box">
+        <div class="spinner" id="spinner"></div>
         <img id="avatarImg" src="" alt="avatar" />
       </div>
       <div class="info-box">
@@ -183,6 +217,22 @@
       </div>
     </div>
 
+    <!-- My Projects Card -->
+    <div class="card">
+      <div class="info-box">
+        <div class="info-row">
+          <span>My Projects</span>
+          <span>-</span>
+        </div>
+        <div class="info-row" style="flex-direction: column; gap: 0.5rem;">
+          <span>
+            Wrapidly | Maintained 
+            <a href="https://rayfieldmc.github.io" target="_blank" class="api-link">Click Here</a>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer Card -->
     <div class="card footer-card">
       <div class="info-box">
@@ -198,6 +248,7 @@
     const avatarUrlSpan = document.getElementById("avatarUrl");
     const playerNameSpan = document.getElementById("playerName");
     const downloadLink = document.getElementById("downloadLink");
+    const spinner = document.getElementById("spinner");
     let avatarUrl = "";
 
     function lookupPlayer() {
@@ -207,16 +258,25 @@
         return;
       }
       avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`;
+      avatarImg.style.display = "none"; // hide image until loaded
+      spinner.style.display = "block";  // show spinner
       avatarImg.src = avatarUrl;
       avatarImg.alt = `Avatar of ${name}`;
       playerNameSpan.textContent = name;
       avatarUrlSpan.textContent = avatarUrl;
       avatarUrlSpan.classList.remove("error");
-      downloadLink.href = avatarUrl+"?download"; // direct download link
+      downloadLink.href = avatarUrl+"?download"; 
       card.style.display = "flex";
     }
 
+    avatarImg.addEventListener("load", () => {
+      spinner.style.display = "none"; 
+      avatarImg.style.display = "block"; 
+    });
+
     avatarImg.addEventListener("error", () => {
+      spinner.style.display = "none"; 
+      avatarImg.style.display = "block";
       avatarImg.src = "./fallback.png";
       avatarUrlSpan.textContent = "❌ No Player Found";
       avatarUrlSpan.classList.add("error");
@@ -234,9 +294,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
