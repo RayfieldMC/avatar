@@ -257,7 +257,7 @@
         card.style.display = "none";
         return;
       }
-      avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`;
+      avatarUrl = `https://littleavatar.onrender.com/avatar/playername/${name}.png`+'?res=1024';
       avatarImg.style.display = "none"; // hide image until loaded
       spinner.style.display = "block";  // show spinner
       avatarImg.src = avatarUrl;
@@ -265,7 +265,7 @@
       playerNameSpan.textContent = name;
       avatarUrlSpan.textContent = avatarUrl;
       avatarUrlSpan.classList.remove("error");
-      downloadLink.href = avatarUrl+"?download"; 
+      downloadLink.href = avatarUrl+"&download"; 
       card.style.display = "flex";
     }
 
@@ -294,3 +294,4 @@
   </script>
 </body>
 </html>
+
